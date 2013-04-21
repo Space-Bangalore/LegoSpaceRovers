@@ -9,12 +9,15 @@ Steps to install the application
 This application requires the following softwares:
 
 - NXT_Python (version 2.2.2)
+
 $ sudo apt-get install python-nxt
 
 - WebSocket-for-Python (ws4py)
+
 $ sudo pip install ws4py
 
 - Meteor (version 0.6.2)
+
 $ curl https://install.meteor.com | /bin/sh
 
 - Application software
