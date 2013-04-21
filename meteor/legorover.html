@@ -1,0 +1,64 @@
+<head>
+  <title>LegoSpaceRovers</title>
+	<style>
+		table,th
+		{
+		border:2px;
+
+		}
+		table
+		{
+			width:50%;
+
+			text-align:center;
+
+		}
+		th
+		{
+			height:20px;
+			vertical-align:center;
+		}
+	</style>
+</head>
+
+<body>
+  <div id="outer">
+    {{> LegoSpaceRovers}}
+  </div>
+</body>
+
+
+<template name="LegoSpaceRovers">
+
+  <div class="move">
+<table>
+    <tr>
+    <td></td>
+    <td><input type="image"  class="forward" src="up.svg" align="top" alt="forward" width="54" height="54"></td>
+    <td></td>
+    </tr>
+    <tr>
+    <td><input type="image"  class="left" src="lft.svg" alt="left" align="right" width="54" height="54"></td>
+    <td><input type="image"  class="stop" src="stop.svg" alt="stop" align="middle" width="54" height="54"></td>
+    <td><input type="image"  class="right" src="rht.svg" alt="right" align="left" width="54" height="54"></td>
+    </tr>
+    <tr>
+    <td></td>
+    <td><input type="image"  class="back" src="dwn.svg" align="bottom" alt="backward" width="54" height="54"></td>
+    <td></td>
+    </tr>
+</table>
+<br>
+<table> 
+
+    <tr><font size="4">Rules & Options</font></tr> 
+    <tr>
+    <td><input type="image"  class="checky" src="empty.svg" id="checky" alt="checky" width="32" height="32"></td>
+    <td> <font size="5">Avoid Obstacles</font></td>
+    </tr>    
+</table>
+</div>
+</template>
+
+
+
