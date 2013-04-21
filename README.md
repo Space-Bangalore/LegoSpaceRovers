@@ -21,15 +21,21 @@ $ sudo pip install ws4py
 $ curl https://install.meteor.com | /bin/sh
 
 - Application software
+
 $ git clone https://github.com/Space-Bangalore/LegoSpaceRovers.git
+
 - open a terminal
+
 $ cd LegoSpaceRovers
+
 $ cd meteor
+
 $ meteor
 
 Add a bluetooth connection with your Lego NXT Brick on your computer
 
 - open another terminal
+
 $ python ddp-lego-driver.py localhost:3000
 
 - Open a browser
