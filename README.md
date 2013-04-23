@@ -43,5 +43,5 @@ Goto http://localhost:3000/
 
 PS: Windows and MAC versions coming soon..!
 
-Now you can control your LEGO NXT Brick remotely from any computer or mobile devide. 
+Now you can control your LEGO NXT Brick remotely from any computer or mobile device. 
 Enjoy!
