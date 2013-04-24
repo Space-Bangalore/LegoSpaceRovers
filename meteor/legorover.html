@@ -1,24 +1,5 @@
 <head>
   <title>LegoSpaceRovers</title>
-	<style>
-		table,th
-		{
-		border:2px;
-
-		}
-		table
-		{
-			width:50%;
-
-			text-align:center;
-
-		}
-		th
-		{
-			height:20px;
-			vertical-align:center;
-		}
-	</style>
 </head>
 
 <body>
@@ -30,7 +11,7 @@
 
 <template name="LegoSpaceRovers">
 
-  <div class="move">
+  <div class="LegoSpaceRovers">
 <table>
     <tr>
     <td></td>
@@ -52,13 +33,29 @@
 <table> 
 
     <tr><font size="4">Rules & Options</font></tr> 
-    <tr>
-    <td><input type="image"  class="checky" src="empty.svg" id="checky" alt="checky" width="32" height="32"></td>
-    <td> <font size="5">Avoid Obstacles</font></td>
-    </tr>    
+    {{#each legorules}}
+      {{> Rules}}
+    {{/each}}
 </table>
 </div>
 </template>
 
 
+<template name="Rules">
+<div class="rules">
+<tr>
+<td>
+{{#if chkobs}}
+
+	<input type="image"  class="chkobs" src="checked.svg" id="checky" alt="checky" width="32" height="32">
+{{/if}}
+{{#unless chkobs}}
+	<input type="image"  class="chkobs" src="empty.svg" id="checky" alt="checky" width="32" height="32">
+{{/unless}}
+</td>
+<td> <font size="5">Avoid Obstacles</font></td>
+</tr>
+
+</div>
+</template>
 
