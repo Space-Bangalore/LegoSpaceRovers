@@ -205,7 +205,7 @@ class DDPClient(WebSocketClient):
 				turnleft(self.mrt,self.mlft)
 			if key == "brake":
 				brake(self.bm)
-			if key == "checky":
+			if key == "chkobs":
 				if value == 1:
 					check_obstacle = 1
 					thread.start_new_thread(detect_obstacle,(self.us,self.bm))
