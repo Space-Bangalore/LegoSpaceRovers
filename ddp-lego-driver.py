@@ -23,40 +23,45 @@ def init_nxt():
 def init_drive_motors(brick):
 	ma = nxt.Motor(brick,nxt.PORT_A)
 	mb = nxt.Motor(brick,nxt.PORT_B)
-	return ma, mb
+	bm = nxt.SynchronizedMotors(ma,mb,0)
+	return ma, mb, bm
 
 def turnmotor(motor, power, degrees):
 	motor.turn(power, degrees)
 
-def runmotor(motor, power):
-	motor.run(power)
 
-def brake(mrt,mlft):
-	mrt.brake()
-	mlft.brake()
+def brake(bm):
+	bm.brake()
+	time.sleep(0.1)
+	bm.idle()
 
-def gofwd(mrt,mlft):
-	thread.start_new_thread(runmotor,(mrt,80))
-	thread.start_new_thread(runmotor,(mlft,80))
+def gofwd(bm):
+	bm.run(80)
 
-def goback(mrt,mlft):
-	thread.start_new_thread(runmotor,(mrt,-80))
-	thread.start_new_thread(runmotor,(mlft,-80))
+def goback(bm):
+	bm.run(-80)
 
-def goright(mrt,mlft):
+def turnright(mrt,mlft):
 	thread.start_new_thread(turnmotor,(mrt,-20,270))
 	thread.start_new_thread(turnmotor,(mlft,20,270))
 
-def goleft(mrt,mlft):
+def turnleft(mrt,mlft):
 	thread.start_new_thread(turnmotor,(mrt,20,270))
 	thread.start_new_thread(turnmotor,(mlft,-20,270))
 
-def detect_obstacle(us,mrt,mlft):
+def detect_obstacle(us,bm):
 	while check_obstacle:
 		while us.get_distance() > 25:
+			if check_obstacle:
+				pass
+			else:
+				return
+		brake(bm)
+		time.sleep(0.1)
+		goback(bm)
+		while us.get_distance() < 30:
 			pass
-		brake(mrt,mlft)
-		time.sleep(10)
+		brake(bm)
 
 def log(msg):
     """A shortcut to write to the standard error file descriptor"""
@@ -96,7 +101,7 @@ class DDPClient(WebSocketClient):
         self.pending_condition = threading.Condition()
         self.pending = {}
 	self.brick = init_nxt()
-	self.mrt, self.mlft = init_drive_motors(self.brick)
+	self.mrt, self.mlft, self.bm = init_drive_motors(self.brick)
 	self.us = nxt.get_sensor(self.brick,nxt.PORT_4)
 
 
@@ -191,21 +196,19 @@ class DDPClient(WebSocketClient):
                 if 'fields' in msg:
                     for key, value in msg['fields'].items():
 			if key == "fwd":
-				gofwd(self.mrt,self.mlft)					
+				gofwd(self.bm)
 			if key == "bwd":
-				goback(self.mrt,self.mlft)
+				goback(self.bm)
 			if key == "right":
-				goright(self.mrt,self.mlft)
+				turnright(self.mrt,self.mlft)
 			if key == "left":
-				goleft(self.mrt,self.mlft)
+				turnleft(self.mrt,self.mlft)
 			if key == "brake":
-				brake(self.mrt,self.mlft)
+				brake(self.bm)
 			if key == "checky":
 				if value == 1:
 					check_obstacle = 1
-					if not checking_obstacle:
-						thread.start_new_thread(detect_obstacle,(self.us,self.mrt,self.mlft))
-						checking_obstacle = 1
+					thread.start_new_thread(detect_obstacle,(self.us,self.bm))
 				else:
 					check_obstacle = 0
 				
