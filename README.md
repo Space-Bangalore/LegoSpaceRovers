@@ -41,7 +41,7 @@ $ python ddp-lego-driver.py localhost:3000
 - Open a browser
 Goto http://localhost:3000/
 
-PS: Windows and MAC versions coming soon..!
+PS: Instllations Instructions for Windows is present in the wiki while MAC instructions are coming soon..!
 
 Now you can control your LEGO NXT Brick remotely from any computer or mobile device. 
 Enjoy!
