@@ -15,6 +15,7 @@ import nxt
 distance = 0
 check_obstacle = 1 
 checking_obstacle = 0 
+delay = 0 
 DDP_VERSIONS = ["pre1"]
 
 def init_nxt():
@@ -30,22 +31,27 @@ def turnmotor(motor, power, degrees):
 	motor.turn(power, degrees)
 
 
-def brake(bm):
+def brake(bm,delay=0):
+	time.sleep(delay/1000.0)
 	bm.brake()
 	time.sleep(0.1)
 	bm.idle()
 
-def gofwd(bm):
+def gofwd(bm,delay=0):
+	time.sleep(delay/1000.0)
 	bm.run(80)
 
-def goback(bm):
+def goback(bm,delay=0):
+	time.sleep(delay/1000.0)
 	bm.run(-80)
 
-def turnright(mrt,mlft):
+def turnright(mrt,mlft,delay=0):
+	time.sleep(delay/1000.0)
 	thread.start_new_thread(turnmotor,(mrt,-20,270))
 	thread.start_new_thread(turnmotor,(mlft,20,270))
 
-def turnleft(mrt,mlft):
+def turnleft(mrt,mlft,delay=0):
+	time.sleep(delay/1000.0)
 	thread.start_new_thread(turnmotor,(mrt,20,270))
 	thread.start_new_thread(turnmotor,(mlft,-20,270))
 
@@ -150,6 +156,7 @@ class DDPClient(WebSocketClient):
 
     def received_message(self, data):
 	global checking_obstacle
+	global delay 
 	global check_obstacle
         """Parse an incoming message and print it. Also update
         self.pending appropriately"""
@@ -196,21 +203,23 @@ class DDPClient(WebSocketClient):
                 if 'fields' in msg:
                     for key, value in msg['fields'].items():
 			if key == "fwd":
-				gofwd(self.bm)
+				gofwd(self.bm,delay)
 			if key == "bwd":
-				goback(self.bm)
+				goback(self.bm,delay)
 			if key == "right":
-				turnright(self.mrt,self.mlft)
+				turnright(self.mrt,self.mlft,delay)
 			if key == "left":
-				turnleft(self.mrt,self.mlft)
+				turnleft(self.mrt,self.mlft,delay)
 			if key == "brake":
-				brake(self.bm)
+				brake(self.bm,delay)
 			if key == "chkobs":
 				if value == 1:
 					check_obstacle = 1
 					thread.start_new_thread(detect_obstacle,(self.us,self.bm))
 				else:
 					check_obstacle = 0
+			if key == "delay":
+				delay = value
 				
                         log("  - FIELD {} {}".format(key, value))
                 if 'cleared' in msg:
