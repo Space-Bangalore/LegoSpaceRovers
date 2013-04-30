@@ -30,19 +30,19 @@
     </tr>
 </table>
 <br>
-<table> 
-
-    <tr><font size="4">Rules & Options</font></tr> 
-    {{#each legorules}}
+    {{#each legorecords}}
       {{> Rules}}
+      {{>Settings}}
     {{/each}}
-</table>
 </div>
 </template>
 
 
 <template name="Rules">
+<br>
 <div class="rules">
+<table>
+<tr><font size="5">Rules</font></tr> 
 <tr>
 <td>
 {{#if chkobs}}
@@ -53,9 +53,31 @@
 	<input type="image"  class="chkobs" src="empty.svg" id="checky" alt="checky" width="32" height="32">
 {{/unless}}
 </td>
-<td> <font size="5">Avoid Obstacles</font></td>
+<td style="float:left;"> <font size="4">If you believe there is an obstacle, reverse.</font></td>
 </tr>
-
+</table>
 </div>
+<br>
 </template>
 
+<template name="Settings">
+<div class="settings">
+<table>
+<tr><font size="5">Settings</font></tr>
+<tr>
+<td>
+<font size="4">Delay in ms: </font>
+</td>
+<td>
+    <select id="delay" style="height:30px; float:left; width:80px;">
+                  <option {{selected 0}}>0</option>
+                  <option {{selected 500}}>500</option>
+                  <option {{selected 1000}}>1000</option>
+                  <option {{selected 1300}}>1300</option>
+                  <option {{selected 180000}}>180000</option>
+    </select>
+</td>
+</tr>
+</table>
+</div>
+</template>
