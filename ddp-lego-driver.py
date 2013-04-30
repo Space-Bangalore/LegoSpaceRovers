@@ -219,7 +219,7 @@ class DDPClient(WebSocketClient):
 				else:
 					check_obstacle = 0
 			if key == "delay":
-				delay = value
+				delay = int(value)
 				
                         log("  - FIELD {} {}".format(key, value))
                 if 'cleared' in msg:
