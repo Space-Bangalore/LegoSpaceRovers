@@ -47,10 +47,20 @@ def goback(bm,delay=0):
 
 def turnright(mrt,mlft,delay=0):
 	time.sleep(delay/1000.0)
+	mrt.run(-70)
+	mlft.run(70)
+
+def turnright90(mrt,mlft,delay=0):
+	time.sleep(delay/1000.0)
 	thread.start_new_thread(turnmotor,(mrt,-20,270))
 	thread.start_new_thread(turnmotor,(mlft,20,270))
 
 def turnleft(mrt,mlft,delay=0):
+	time.sleep(delay/1000.0)
+	mrt.run(70)
+	mlft.run(-70)
+
+def turnleft90(mrt,mlft,delay=0):
 	time.sleep(delay/1000.0)
 	thread.start_new_thread(turnmotor,(mrt,20,270))
 	thread.start_new_thread(turnmotor,(mlft,-20,270))
@@ -210,6 +220,10 @@ class DDPClient(WebSocketClient):
 				turnright(self.mrt,self.mlft,delay)
 			if key == "left":
 				turnleft(self.mrt,self.mlft,delay)
+			if key == "right90":
+				turnright90(self.mrt,self.mlft,delay)
+			if key == "left90":
+				turnleft90(self.mrt,self.mlft,delay)
 			if key == "brake":
 				brake(self.bm,delay)
 			if key == "chkobs":

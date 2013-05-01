@@ -13,19 +13,20 @@
 
   <div class="LegoSpaceRovers">
 <table>
+    <tr><font size="5">Controls</font></tr>
     <tr>
-    <td></td>
-    <td><input type="image"  class="forward" src="up.svg" align="top" alt="forward" width="54" height="54"></td>
-    <td></td>
+    <td>90<input type="image"  class="left90" src="lft.png" alt="left 90" align="right" width="54" height="54"></td>
+    <td><input type="image"  class="forward" src="up.png" align="top" alt="forward" width="54" height="54"></td>
+    <td>90<input type="image"  class="right90" src="rht.png" alt="right 90" align="left" width="54" height="54"></td>
     </tr>
     <tr>
-    <td><input type="image"  class="left" src="lft.svg" alt="left" align="right" width="54" height="54"></td>
-    <td><input type="image"  class="stop" src="stop.svg" alt="stop" align="middle" width="54" height="54"></td>
-    <td><input type="image"  class="right" src="rht.svg" alt="right" align="left" width="54" height="54"></td>
+    <td><input type="image"  class="left" src="lft.png" alt="left" align="right" width="54" height="54"></td>
+    <td><input type="image"  class="stop" src="stop.png" alt="stop" align="middle" width="54" height="54"></td>
+    <td><input type="image"  class="right" src="rht.png" alt="right" align="left" width="54" height="54"></td>
     </tr>
     <tr>
     <td></td>
-    <td><input type="image"  class="back" src="dwn.svg" align="bottom" alt="backward" width="54" height="54"></td>
+    <td><input type="image"  class="back" src="dwn.png" align="bottom" alt="backward" width="54" height="54"></td>
     <td></td>
     </tr>
 </table>
@@ -47,10 +48,10 @@
 <td>
 {{#if chkobs}}
 
-	<input type="image"  class="chkobs" src="checked.svg" id="checky" alt="checky" width="32" height="32">
+	<input type="image"  class="chkobs" src="checked.png" id="checky" alt="checky" width="32" height="32">
 {{/if}}
 {{#unless chkobs}}
-	<input type="image"  class="chkobs" src="empty.svg" id="checky" alt="checky" width="32" height="32">
+	<input type="image"  class="chkobs" src="empty.png" id="checky" alt="checky" width="32" height="32">
 {{/unless}}
 </td>
 <td style="float:left;"> <font size="4">If you believe there is an obstacle, reverse.</font></td>
