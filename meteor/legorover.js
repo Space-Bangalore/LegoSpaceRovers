@@ -5,7 +5,17 @@ Move = new Meteor.Collection("move");
 
 if (Meteor.isClient) {
 
-	Session.setDefault("checkObsEnable", 0);
+  Session.setDefault("checkObsEnable", 0);
+
+  Template.LegoSpaceRovers.legorecords = function () {
+    return Move.find({});
+  };
+
+  Template.Settings.selected = function (value) {
+    a = Move.findOne({});
+    return a.delay == value ? ' selected' : '';
+  };
+
 
   Template.LegoSpaceRovers.events({
     'click input.forward': function () {
@@ -43,22 +53,20 @@ if (Meteor.isClient) {
         console.log("You pressed the button %s ",a._id);
     },
 
-    'click input.checky': function () {
+    'change #delay': function () {
       a = Move.findOne({});
+      Move.update(a._id, {$set: {delay: delay.options[delay.selectedIndex].value}});
+      console.log("You pressed the button %s ",a._id);
+    },
 
-      var getVal = Session.get("checkObsEnable");
 
-	if (getVal == 0) {
-		document.getElementById("checky").src = "checked.svg";
-		Session.set("checkObsEnable", 1);
-	        Move.update(a._id, {$set: {checky: 1}});
+    'click input.chkobs': function () {
+      a = Move.findOne({});
+      if (a.chkobs == 0)
+	        Move.update(a._id, {$set: {chkobs: 1}});
+	else
+		Move.update(a._id, {$set: {chkobs: 0}});
 	}
-	else {
-		document.getElementById("checky").src = "empty.svg";
-		Session.set("checkObsEnable", 0);
-		Move.update(a._id, {$set: {checky: 0}});
-	}
-    }
   });
 
 }
@@ -68,7 +76,7 @@ if (Meteor.isClient) {
 if (Meteor.isServer) {
   Meteor.startup(function () {
     if (Move.find().count() === 0) {
-        Move.insert({fwd: 0, bwd: 0, brake: 0, left: 0, right: 0, checky: 0});
+        Move.insert({fwd: 0, bwd: 0, brake: 0, left: 0, right: 0, delay:0, chkobs: 0});
     }
   });
 }

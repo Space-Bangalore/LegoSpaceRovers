@@ -15,6 +15,7 @@ import nxt
 distance = 0
 check_obstacle = 1 
 checking_obstacle = 0 
+delay = 0 
 DDP_VERSIONS = ["pre1"]
 
 def init_nxt():
@@ -23,40 +24,50 @@ def init_nxt():
 def init_drive_motors(brick):
 	ma = nxt.Motor(brick,nxt.PORT_A)
 	mb = nxt.Motor(brick,nxt.PORT_B)
-	return ma, mb
+	bm = nxt.SynchronizedMotors(ma,mb,0)
+	return ma, mb, bm
 
 def turnmotor(motor, power, degrees):
 	motor.turn(power, degrees)
 
-def runmotor(motor, power):
-	motor.run(power)
 
-def brake(mrt,mlft):
-	mrt.brake()
-	mlft.brake()
+def brake(bm,delay=0):
+	time.sleep(delay/1000.0)
+	bm.brake()
+	time.sleep(0.1)
+	bm.idle()
 
-def gofwd(mrt,mlft):
-	thread.start_new_thread(runmotor,(mrt,80))
-	thread.start_new_thread(runmotor,(mlft,80))
+def gofwd(bm,delay=0):
+	time.sleep(delay/1000.0)
+	bm.run(80)
 
-def goback(mrt,mlft):
-	thread.start_new_thread(runmotor,(mrt,-80))
-	thread.start_new_thread(runmotor,(mlft,-80))
+def goback(bm,delay=0):
+	time.sleep(delay/1000.0)
+	bm.run(-80)
 
-def goright(mrt,mlft):
+def turnright(mrt,mlft,delay=0):
+	time.sleep(delay/1000.0)
 	thread.start_new_thread(turnmotor,(mrt,-20,270))
 	thread.start_new_thread(turnmotor,(mlft,20,270))
 
-def goleft(mrt,mlft):
+def turnleft(mrt,mlft,delay=0):
+	time.sleep(delay/1000.0)
 	thread.start_new_thread(turnmotor,(mrt,20,270))
 	thread.start_new_thread(turnmotor,(mlft,-20,270))
 
-def detect_obstacle(us,mrt,mlft):
+def detect_obstacle(us,bm):
 	while check_obstacle:
 		while us.get_distance() > 25:
+			if check_obstacle:
+				pass
+			else:
+				return
+		brake(bm)
+		time.sleep(0.1)
+		goback(bm)
+		while us.get_distance() < 30:
 			pass
-		brake(mrt,mlft)
-		time.sleep(10)
+		brake(bm)
 
 def log(msg):
     """A shortcut to write to the standard error file descriptor"""
@@ -96,7 +107,7 @@ class DDPClient(WebSocketClient):
         self.pending_condition = threading.Condition()
         self.pending = {}
 	self.brick = init_nxt()
-	self.mrt, self.mlft = init_drive_motors(self.brick)
+	self.mrt, self.mlft, self.bm = init_drive_motors(self.brick)
 	self.us = nxt.get_sensor(self.brick,nxt.PORT_4)
 
 
@@ -145,6 +156,7 @@ class DDPClient(WebSocketClient):
 
     def received_message(self, data):
 	global checking_obstacle
+	global delay 
 	global check_obstacle
         """Parse an incoming message and print it. Also update
         self.pending appropriately"""
@@ -191,23 +203,23 @@ class DDPClient(WebSocketClient):
                 if 'fields' in msg:
                     for key, value in msg['fields'].items():
 			if key == "fwd":
-				gofwd(self.mrt,self.mlft)					
+				gofwd(self.bm,delay)
 			if key == "bwd":
-				goback(self.mrt,self.mlft)
+				goback(self.bm,delay)
 			if key == "right":
-				goright(self.mrt,self.mlft)
+				turnright(self.mrt,self.mlft,delay)
 			if key == "left":
-				goleft(self.mrt,self.mlft)
+				turnleft(self.mrt,self.mlft,delay)
 			if key == "brake":
-				brake(self.mrt,self.mlft)
-			if key == "checky":
+				brake(self.bm,delay)
+			if key == "chkobs":
 				if value == 1:
 					check_obstacle = 1
-					if not checking_obstacle:
-						thread.start_new_thread(detect_obstacle,(self.us,self.mrt,self.mlft))
-						checking_obstacle = 1
+					thread.start_new_thread(detect_obstacle,(self.us,self.bm))
 				else:
 					check_obstacle = 0
+			if key == "delay":
+				delay = int(value)
 				
                         log("  - FIELD {} {}".format(key, value))
                 if 'cleared' in msg:

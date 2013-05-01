@@ -11,6 +11,21 @@ body {
     user-select: none;
 }
 
+table,th {
+    border:2px;
+}
+
+table {
+    width:50%;
+    text-align:center;
+}
+
+th {
+    height:20px;
+    vertical-align:center;
+}
+
+
 #outer {
     width: 600px;
     margin: auto auto;    
