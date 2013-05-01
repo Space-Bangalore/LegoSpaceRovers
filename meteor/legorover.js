@@ -53,6 +53,20 @@ if (Meteor.isClient) {
         console.log("You pressed the button %s ",a._id);
     },
 
+    'click input.left90': function () {
+      a = Move.findOne({});
+      Move.update(a._id, {$inc: {left90: 1}});
+      if (typeof console !== 'undefined')
+        console.log("You pressed the button %s ",a._id);
+    },
+
+    'click input.right90': function () {
+      a = Move.findOne({});
+      Move.update(a._id, {$inc: {right90: 1}});
+      if (typeof console !== 'undefined')
+        console.log("You pressed the button %s ",a._id);
+    },
+
     'change #delay': function () {
       a = Move.findOne({});
       Move.update(a._id, {$set: {delay: delay.options[delay.selectedIndex].value}});
@@ -76,7 +90,7 @@ if (Meteor.isClient) {
 if (Meteor.isServer) {
   Meteor.startup(function () {
     if (Move.find().count() === 0) {
-        Move.insert({fwd: 0, bwd: 0, brake: 0, left: 0, right: 0, delay:0, chkobs: 0});
+        Move.insert({fwd: 0, bwd: 0, brake: 0, left: 0, right: 0, left90: 0, right90: 0, delay:0, chkobs: 0});
     }
   });
 }

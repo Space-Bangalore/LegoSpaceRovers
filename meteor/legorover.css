@@ -1,6 +1,6 @@
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color:skyblue;
+    background-color:#DCDCDC;
     font-weight: 200;
     margin: 50px 0;
     padding: 0;
@@ -18,6 +18,9 @@ table,th {
 table {
     width:50%;
     text-align:center;
+    background-color:#7AC5CD;
+    border-radius:8px;
+    padding: 5px;
 }
 
 th {
