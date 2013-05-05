@@ -6,7 +6,7 @@ This project aims to provide a simple web based application that can be used to 
 Steps to install the application
 --------------------------------
 
-Following steps are tested on Ubuntu 12.04 LTS.
+Following steps are tested on Ubuntu 12.04.2 LTS.
 
 This application requires the following softwares:
 
